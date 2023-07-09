@@ -26,15 +26,15 @@
         </div>
       </div>
       <div class="mb-3">
-        <button class="btn btn-primary" :disabled="isFormInvalid" @click.prevent="submitForm">
-          Create Page
-        </button>
+        <button class="btn btn-primary" :disabled="isFormInvalid" @click.prevent="submitForm">Create Page</button>
       </div>
     </form>
   </div>
 </template>
 
 <script lang="ts">
+import type { Page } from '@/models/page.models'
+
 export default {
   props: ['pageCreated'],
   data() {
@@ -47,22 +47,19 @@ export default {
     }
   },
   computed: {
+    // computed properties simply return a value. They use the existing data in order to compute a value that is then used in the template. It does not affect the state.
     isFormInvalid() {
       return !this.pageTitle || !this.content || !this.linkText || !this.linkUrl
     }
   },
   methods: {
-    // handleInput(event: Event): void {
-    //   const target = event.target as HTMLInputElement
-    //   this.pageTitle = target.value
-    // }
     submitForm() {
       if (!this.pageTitle || !this.content || !this.linkText || !this.linkUrl) {
         alert('Please fill out all form fields')
         return
       }
 
-      this.pageCreated({
+      this.$emit('pageCreated', {
         pageTitle: this.pageTitle,
         content: this.content,
         link: {
@@ -72,11 +69,34 @@ export default {
         published: this.published
       })
 
-      this.pageTitle = '',
-      this.content = '',
-      this.linkText = '',
-      this.linkUrl = '',
+      this.pageTitle = ''
+      this.content = ''
+      this.linkText = ''
+      this.linkUrl = ''
       this.published = false
+    }
+  },
+  watch: {
+    // watch, watches for a property to change and then updated the state
+    pageTitle(newTitle, oldTitle) {
+      if (this.linkText === oldTitle) {
+        this.linkText = newTitle
+      }
+    }
+  },
+  emits: {
+    pageCreated(pageObj: Page) {
+      if (!pageObj.pageTitle) {
+        return false
+      }
+
+      if (!pageObj.content) {
+        return false
+      }
+
+      if (!pageObj.link || !pageObj.link.text || !pageObj.link.url) {
+        return false
+      }
     }
   }
 }

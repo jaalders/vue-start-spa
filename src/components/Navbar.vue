@@ -3,14 +3,15 @@
     <div class="container-fluid">
       <a class="navbar-brand" href="#">My Vue</a>
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li v-for="(page, index) in publishedPages" class="nav-item">
-          <NavbarLink
-            :page="page"
-            :isActive="activePage == index"
-            @click.prevent="navLinkClick(index)"
-          >
-          </NavbarLink>
-        </li>
+        <NavbarLink
+          v-for="(page, index) in publishedPages"
+          class="nav-item"
+          :page="page"
+          :isActive="activePage == index"
+          :key="index"
+          @click.prevent="navLinkClick(index)"
+        >
+        </NavbarLink>
       </ul>
       <form class="d-flex">
         <button class="btn btn-primary" @click.prevent="changeTheme()">Toggle Navbar</button>
@@ -48,7 +49,7 @@ export default {
       }
 
       this.theme = theme
-      this.storeThemeSetting();
+      this.storeThemeSetting()
     },
     storeThemeSetting() {
       localStorage.setItem('theme', this.theme)

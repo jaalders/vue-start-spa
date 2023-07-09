@@ -6,17 +6,19 @@
 </template>
 
 <script lang="ts">
+import type { Page } from '@/models/page.models'
+
 export default {
   props: {
     page: {
       type: Object,
-      default(rawProps) {
+      default(rawProps: Page) {
         return {
           pageTitle: '',
-          content: '',
+          content: ''
         }
       }
     }
-  },
+  }
 }
 </script>

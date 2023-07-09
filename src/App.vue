@@ -1,19 +1,6 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-</script>
-
 <template>
-  <Navbar
-    :pages="pages"
-    :active-page="activePage"
-    :nav-link-click="(index: number) => activePage = index"
-  ></Navbar>
-
-  <div v-show="false">hide this content</div>
-
-  <!-- <PageViewer v-if="pages.length > 0" :page="pages[activePage]"></PageViewer> -->
-  <CreatePage :pageCreated="pageCreated"> </CreatePage>
-  <!-- <RouterView /> -->
+  <Navbar :pages="pages" :active-page="activePage" :nav-link-click="(index: number) => activePage = index"></Navbar>
+  <CreatePage @page-created="pageCreated"> </CreatePage>
 </template>
 
 <style scoped></style>
@@ -22,13 +9,7 @@ import { RouterLink, RouterView } from 'vue-router'
 import PageViewer from './components/PageViewer.vue'
 import Navbar from './components/Navbar.vue'
 import CreatePage from './components/CreatePage.vue'
-
-interface Page {
-  pageTitle: string
-  content: string
-  linkText: string
-  linkUrl: string
-}
+import type { Page } from '@/models/page.models'
 
 export default {
   components: {
